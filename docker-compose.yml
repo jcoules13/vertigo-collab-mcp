@@ -1,0 +1,17 @@
+services:
+  vertigo-collab-mcp:
+    image: ghcr.io/jcoules13/vertigo-collab-mcp:latest
+    container_name: vertigo-collab-mcp
+    restart: unless-stopped
+    environment:
+      - MCP_API_KEY=${MCP_API_KEY}
+      - SUPABASE_URL=http://supabase-kong:8000
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
+      - N8N_WEBHOOK_URL=http://n8n:5678/webhook
+      - PORT=3100
+    networks:
+      - ai_net
+
+networks:
+  ai_net:
+    external: true
