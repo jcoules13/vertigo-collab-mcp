@@ -94,7 +94,7 @@ export function registerDossierTools(server: McpServer) {
         cree_par: ACTOR_ID,
       };
       if (usager_telephone) body.usager_telephone = usager_telephone;
-      if (date_naissance) body.date_naissance = date_naissance;
+      if (date_naissance) body.usager_date_naissance = date_naissance;
       if (motif) body.motif = motif;
       if (notes) body.notes = notes;
 
