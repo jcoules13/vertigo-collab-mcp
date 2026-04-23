@@ -11,6 +11,7 @@ import { registerPermanenceTools } from './tools/permanences.js';
 import { registerCollaborateurTools } from './tools/collaborateurs.js';
 import { registerStatsTools } from './tools/stats.js';
 import { registerExportTools } from './tools/export.js';
+import { registerProjetTools } from './tools/projets.js';
 
 const API_KEY = process.env.MCP_API_KEY ?? '';
 const PORT = parseInt(process.env.PORT ?? '3100');
@@ -34,6 +35,7 @@ function createServer(): McpServer {
   registerCollaborateurTools(server);
   registerStatsTools(server);
   registerExportTools(server);
+  registerProjetTools(server);
   return server;
 }
 
