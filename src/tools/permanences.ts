@@ -2,6 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { supaFetch } from '../supabase.js';
 import { callWebhook } from '../webhooks.js';
+import { ACTOR_ID } from '../index.js';
 
 export function registerPermanenceTools(server: McpServer) {
   server.tool(
@@ -46,6 +47,7 @@ export function registerPermanenceTools(server: McpServer) {
     async ({ occurrence_id, collaborateur_id, action }) => {
       await callWebhook('collab-permanence-assign', {
         occurrence_id, collaborateur_id, action,
+        requested_by: ACTOR_ID,
       });
       return {
         content: [{

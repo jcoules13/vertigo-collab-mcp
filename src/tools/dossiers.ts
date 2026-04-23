@@ -1,6 +1,7 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { supaFetch } from '../supabase.js';
+import { ACTOR_ID } from '../index.js';
 
 export function registerDossierTools(server: McpServer) {
   server.tool(
@@ -59,7 +60,7 @@ export function registerDossierTools(server: McpServer) {
       ),
     },
     async ({ id, fields }) => {
-      const body = { ...fields, updated_at: new Date().toISOString() };
+      const body = { responsable_id: ACTOR_ID, ...fields, updated_at: new Date().toISOString() };
       await supaFetch('PATCH', `dossiers_suivi?id=eq.${id}`, {
         prefer: 'return=minimal',
         body,

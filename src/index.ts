@@ -14,11 +14,13 @@ import { registerExportTools } from './tools/export.js';
 
 const API_KEY = process.env.MCP_API_KEY ?? '';
 const PORT = parseInt(process.env.PORT ?? '3100');
+export const ACTOR_ID = process.env.COLLAB_ACTOR_ID ?? '';
 
 if (!API_KEY) {
   console.error('FATAL: MCP_API_KEY is not set');
   process.exit(1);
 }
+if (!ACTOR_ID) console.warn('WARN: COLLAB_ACTOR_ID not set — write operations will have no actor attribution');
 
 function createServer(): McpServer {
   const server = new McpServer({

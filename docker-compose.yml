@@ -9,6 +9,7 @@ services:
       - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
       - N8N_WEBHOOK_URL=http://n8n:5678/webhook
       - PORT=3150
+      - COLLAB_ACTOR_ID=1d00124c-847a-4b33-b412-ba807d66f489
     networks:
       - ai_net
 

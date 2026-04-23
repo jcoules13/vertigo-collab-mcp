@@ -2,6 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { supaFetch } from '../supabase.js';
 import { callWebhook } from '../webhooks.js';
+import { ACTOR_ID } from '../index.js';
 
 export function registerReservationTools(server: McpServer) {
   server.tool(
@@ -76,7 +77,7 @@ export function registerReservationTools(server: McpServer) {
         body,
       });
 
-      await callWebhook('collab-reservation-manage', { id, action, notes_admin });
+      await callWebhook('collab-reservation-manage', { id, action, notes_admin, actor_id: ACTOR_ID });
 
       return {
         content: [{ type: 'text' as const, text: `Réservation ${id} → statut "${statutMap[action]}" appliqué.` }],

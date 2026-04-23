@@ -2,6 +2,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
 import { supaFetch } from '../supabase.js';
 import { callWebhook } from '../webhooks.js';
+import { ACTOR_ID } from '../index.js';
 
 export function registerRdvTools(server: McpServer) {
   server.tool(
@@ -44,6 +45,7 @@ export function registerRdvTools(server: McpServer) {
       await callWebhook('collab-rdv-create', {
         titre, date, heure_debut, heure_fin,
         participants, lieu, description,
+        created_by: ACTOR_ID,
       });
       return {
         content: [{
