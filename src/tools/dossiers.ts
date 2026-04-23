@@ -72,6 +72,44 @@ export function registerDossierTools(server: McpServer) {
   );
 
   server.tool(
+    'create_dossier',
+    'Crée un nouveau dossier de suivi pour un usager. Retourne l\'ID du dossier créé.',
+    {
+      usager_nom: z.string().min(1).describe('Nom de l\'usager'),
+      usager_prenom: z.string().min(1).describe('Prénom de l\'usager'),
+      usager_email: z.string().email().describe('Email de l\'usager'),
+      usager_telephone: z.string().optional().describe('Téléphone de l\'usager'),
+      date_naissance: z.string().optional().describe('Date de naissance (YYYY-MM-DD)'),
+      motif: z.string().optional().describe('Motif d\'accompagnement'),
+      statut: z.enum(['ouvert', 'en_cours', 'clos']).optional().default('ouvert').describe('Statut initial du dossier'),
+      notes: z.string().optional().describe('Notes initiales'),
+    },
+    async ({ usager_nom, usager_prenom, usager_email, usager_telephone, date_naissance, motif, statut, notes }) => {
+      const body: Record<string, unknown> = {
+        usager_nom,
+        usager_prenom,
+        usager_email,
+        statut: statut ?? 'ouvert',
+        responsable_id: ACTOR_ID,
+        cree_par: ACTOR_ID,
+      };
+      if (usager_telephone) body.usager_telephone = usager_telephone;
+      if (date_naissance) body.date_naissance = date_naissance;
+      if (motif) body.motif = motif;
+      if (notes) body.notes = notes;
+
+      const rows = await supaFetch<{ id: string }[]>('POST', 'dossiers_suivi', {
+        prefer: 'return=representation',
+        body,
+      });
+      const newId = rows[0]?.id;
+      return {
+        content: [{ type: 'text' as const, text: `Dossier créé (ID: ${newId}) pour ${usager_prenom} ${usager_nom} (${usager_email}).` }],
+      };
+    }
+  );
+
+  server.tool(
     'create_seance',
     'Crée une nouvelle note de séance associée à un dossier.',
     {
